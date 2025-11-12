@@ -1,0 +1,87 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template mod_aireading/attempt_row
+
+    Single attempt row in the attempts list
+
+    Context variables:
+    * attemptnum - Attempt number
+    * timestarted - Timestamp when started
+    * timefinished - Timestamp when finished
+    * status - Status (0=in progress, 1=submitted, 2=analyzed, 3=error)
+    * statustext - Human readable status
+    * grade - Grade (if analyzed)
+    * wpm - Words per minute (if analyzed)
+    * accuracy - Accuracy score (if analyzed)
+    * fluency - Fluency score (if analyzed)
+    * viewurl - URL to view attempt details
+    * isanalyzed - Boolean if attempt has been analyzed
+    * iserror - Boolean if attempt has error
+}}
+<div class="attempt-row card mb-2">
+    <div class="card-body">
+        <div class="row align-items-center">
+            <div class="col-md-2">
+                <strong>{{#str}}attempt, mod_aireading{{/str}} {{attemptnum}}</strong>
+            </div>
+            <div class="col-md-2">
+                <small class="text-muted">{{timestarted}}</small>
+            </div>
+            <div class="col-md-2">
+                <span class="badge badge-{{statusclass}}">{{statustext}}</span>
+            </div>
+            {{#isanalyzed}}
+                <div class="col-md-4">
+                    <div class="attempt-scores">
+                        <span class="badge badge-primary" title="{{#str}}wpm, mod_aireading{{/str}}">
+                            <i class="fa fa-tachometer"></i> {{wpm}} {{#str}}wpm, mod_aireading{{/str}}
+                        </span>
+                        <span class="badge badge-success" title="{{#str}}accuracy, mod_aireading{{/str}}">
+                            <i class="fa fa-check-circle"></i> {{accuracy}}%
+                        </span>
+                        <span class="badge badge-info" title="{{#str}}fluency, mod_aireading{{/str}}">
+                            <i class="fa fa-chart-line"></i> {{fluency}}%
+                        </span>
+                        {{#haspronunciation}}
+                        <span class="badge badge-warning" title="{{#str}}pronunciation, mod_aireading{{/str}}">
+                            <i class="fa fa-volume-up"></i> {{pronunciation}}%
+                        </span>
+                        {{/haspronunciation}}
+                    </div>
+                </div>
+                <div class="col-md-2 text-right">
+                    <a href="{{viewurl}}" class="btn btn-sm btn-primary">
+                        {{#str}}viewdetails, mod_aireading{{/str}}
+                    </a>
+                </div>
+            {{/isanalyzed}}
+            {{#iserror}}
+                <div class="col-md-6">
+                    <span class="text-danger">{{#str}}analysisFailed, mod_aireading{{/str}}</span>
+                </div>
+            {{/iserror}}
+            {{^isanalyzed}}
+                {{^iserror}}
+                    <div class="col-md-6">
+                        <span class="text-muted">{{#str}}analysispending, mod_aireading{{/str}}</span>
+                    </div>
+                {{/iserror}}
+            {{/isanalyzed}}
+        </div>
+    </div>
+</div>

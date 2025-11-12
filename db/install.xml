@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="mod/aireading/db" VERSION="20251110" COMMENT="XMLDB file for Moodle mod/aireading"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="aireading" COMMENT="Instances of mod_aireading">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="intro" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="introformat" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="readingtext" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="The reading text for students"/>
+        <FIELD NAME="readingtextformat" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Text format"/>
+        <FIELD NAME="targetwpm" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="100" SEQUENCE="false" COMMENT="Target words per minute"/>
+        <FIELD NAME="maxattempts" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="3" SEQUENCE="false" COMMENT="Maximum number of attempts (0 = unlimited)"/>
+        <FIELD NAME="grademethod" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="1" SEQUENCE="false" COMMENT="Grading method: 1=highest, 2=latest, 3=average"/>
+        <FIELD NAME="language" TYPE="char" LENGTH="10" NOTNULL="true" DEFAULT="de" SEQUENCE="false" COMMENT="Language code (e.g. de, en)"/>
+        <FIELD NAME="readingdifficulty" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="1" SEQUENCE="false" COMMENT="Difficulty level: 1=easy, 2=medium, 3=advanced"/>
+        <FIELD NAME="silencethreshold" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="10" SEQUENCE="false" COMMENT="Seconds of silence for auto-stop"/>
+        <FIELD NAME="enablepronunciation" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Enable pronunciation assessment: 0=off, 1=on"/>
+        <FIELD NAME="minconfidence" TYPE="number" LENGTH="3" NOTNULL="true" DEFAULT="0.80" SEQUENCE="false" DECIMALS="2" COMMENT="Minimum confidence for good pronunciation"/>
+        <FIELD NAME="analysisversion" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="1" SEQUENCE="false" COMMENT="Version of analysis engine"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Creation timestamp"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Last modification timestamp"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="course" UNIQUE="false" FIELDS="course"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="aireading_attempts" COMMENT="Reading attempts by users">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="aireading_id" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Reference to aireading instance"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Reference to user"/>
+        <FIELD NAME="attempt" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="1" SEQUENCE="false" COMMENT="Attempt number"/>
+        <FIELD NAME="audiofileid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Reference to audio file"/>
+        <FIELD NAME="status" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Status: 0=in progress, 1=submitted, 2=analyzed, 3=error"/>
+        <FIELD NAME="timestarted" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Start timestamp"/>
+        <FIELD NAME="timefinished" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Finish timestamp"/>
+        <FIELD NAME="timeanalyzed" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Analysis timestamp"/>
+        <FIELD NAME="duration" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Net duration in seconds"/>
+        <FIELD NAME="wordcount_original" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Word count of original text"/>
+        <FIELD NAME="wordcount_transcribed" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Word count of transcription"/>
+        <FIELD NAME="transcription" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="STT raw transcription"/>
+        <FIELD NAME="analysis_data" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="JSON with detailed analysis results"/>
+        <FIELD NAME="wpm" TYPE="number" LENGTH="10" NOTNULL="false" SEQUENCE="false" DECIMALS="2" COMMENT="Words per minute"/>
+        <FIELD NAME="accuracy_score" TYPE="number" LENGTH="5" NOTNULL="false" SEQUENCE="false" DECIMALS="2" COMMENT="Accuracy score 0-100"/>
+        <FIELD NAME="fluency_score" TYPE="number" LENGTH="5" NOTNULL="false" SEQUENCE="false" DECIMALS="2" COMMENT="Fluency score 0-100"/>
+        <FIELD NAME="pronunciation_score" TYPE="number" LENGTH="5" NOTNULL="false" SEQUENCE="false" DECIMALS="2" COMMENT="Pronunciation score 0-100, NULL if disabled"/>
+        <FIELD NAME="grade" TYPE="number" LENGTH="10" NOTNULL="false" SEQUENCE="false" DECIMALS="5" COMMENT="Final grade for this attempt"/>
+        <FIELD NAME="analysisversion" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Analysis engine version at time of calculation"/>
+        <FIELD NAME="teacherfeedback" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Optional manual teacher feedback"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="aireading_id" TYPE="foreign" FIELDS="aireading_id" REFTABLE="aireading" REFFIELDS="id"/>
+        <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="aireading_id" UNIQUE="false" FIELDS="aireading_id"/>
+        <INDEX NAME="userid" UNIQUE="false" FIELDS="userid"/>
+        <INDEX NAME="status" UNIQUE="false" FIELDS="status"/>
+        <INDEX NAME="timeanalyzed" UNIQUE="false" FIELDS="timeanalyzed"/>
+        <INDEX NAME="aireading_userid_attempt" UNIQUE="true" FIELDS="aireading_id,userid,attempt"/>
+      </INDEXES>
+    </TABLE>
+  </TABLES>
+</XMLDB>

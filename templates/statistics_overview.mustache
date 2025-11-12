@@ -1,0 +1,297 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template mod_aireading/statistics_overview
+
+    Comprehensive statistics overview with charts and visualizations
+
+    Context variables:
+    * stats - Statistics object from statistics_manager
+    * charts - Array of chart HTML outputs
+    * hasattempts - Whether user has any attempts
+    * targetwpm - Target WPM from activity settings
+    * hascharts - Whether any charts are available
+    * insufficientattempts - True if need more attempts for trends
+}}
+
+<div class="ai-reading-statistics-overview">
+
+    {{^hasattempts}}
+    <div class="alert alert-info">
+        {{#str}}no_attempts_yet, mod_aireading{{/str}}
+    </div>
+    {{/hasattempts}}
+
+    {{#hasattempts}}
+
+    {{! Summary Statistics Cards }}
+    <div class="statistics-summary mb-4">
+        <h3>{{#str}}statistics_summary, mod_aireading{{/str}}</h3>
+
+        <div class="row">
+            {{! Total Attempts }}
+            <div class="col-md-3">
+                <div class="stat-card card">
+                    <div class="card-body text-center">
+                        <div class="stat-icon"><i class="fa fa-list-ol"></i></div>
+                        <div class="stat-value">{{stats.totalattempts}}</div>
+                        <div class="stat-label">{{#str}}total_attempts, mod_aireading{{/str}}</div>
+                    </div>
+                </div>
+            </div>
+
+            {{! Best WPM }}
+            <div class="col-md-3">
+                <div class="stat-card card">
+                    <div class="card-body text-center">
+                        <div class="stat-icon"><i class="fa fa-tachometer"></i></div>
+                        <div class="stat-value">{{stats.bestwpm}}</div>
+                        <div class="stat-label">{{#str}}best_wpm, mod_aireading{{/str}}</div>
+                        <small class="text-muted">{{#str}}target, mod_aireading{{/str}}: {{targetwpm}}</small>
+                    </div>
+                </div>
+            </div>
+
+            {{! Best Grade }}
+            <div class="col-md-3">
+                <div class="stat-card card">
+                    <div class="card-body text-center">
+                        <div class="stat-icon"><i class="fa fa-star"></i></div>
+                        <div class="stat-value">{{stats.bestgrade}}%</div>
+                        <div class="stat-label">{{#str}}best_grade, mod_aireading{{/str}}</div>
+                    </div>
+                </div>
+            </div>
+
+            {{! Latest Grade }}
+            <div class="col-md-3">
+                <div class="stat-card card">
+                    <div class="card-body text-center">
+                        <div class="stat-icon"><i class="fa fa-clock-o"></i></div>
+                        <div class="stat-value">{{stats.latestgrade}}%</div>
+                        <div class="stat-label">{{#str}}latest_grade, mod_aireading{{/str}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{! Improvement Indicators }}
+    {{#stats.hasimprovement}}
+    <div class="improvement-section mb-4">
+        <h4>{{#str}}improvement_indicators, mod_aireading{{/str}}</h4>
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="improvement-metric">
+                            <span class="metric-label">{{#str}}wpm_label, mod_aireading{{/str}}</span>
+                            <span class="metric-value {{#stats.wpmimprovement}}positive{{/stats.wpmimprovement}}">
+                                {{#stats.wpmimprovement}}+{{/stats.wpmimprovement}}{{stats.wpmimprovement}}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="improvement-metric">
+                            <span class="metric-label">{{#str}}accuracy_label, mod_aireading{{/str}}</span>
+                            <span class="metric-value {{#stats.accuracyimprovement}}positive{{/stats.accuracyimprovement}}">
+                                {{#stats.accuracyimprovement}}+{{/stats.accuracyimprovement}}{{stats.accuracyimprovement}}%
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="improvement-metric">
+                            <span class="metric-label">{{#str}}fluency_label, mod_aireading{{/str}}</span>
+                            <span class="metric-value {{#stats.fluencyimprovement}}positive{{/stats.fluencyimprovement}}">
+                                {{#stats.fluencyimprovement}}+{{/stats.fluencyimprovement}}{{stats.fluencyimprovement}}%
+                            </span>
+                        </div>
+                    </div>
+                    {{#stats.haspronunciation}}
+                    <div class="col-md-3">
+                        <div class="improvement-metric">
+                            <span class="metric-label">{{#str}}pronunciation_label, mod_aireading{{/str}}</span>
+                            <span class="metric-value {{#stats.pronunciationimprovement}}positive{{/stats.pronunciationimprovement}}">
+                                {{#stats.pronunciationimprovement}}+{{/stats.pronunciationimprovement}}{{stats.pronunciationimprovement}}%
+                            </span>
+                        </div>
+                    </div>
+                    {{/stats.haspronunciation}}
+                </div>
+            </div>
+        </div>
+    </div>
+    {{/stats.hasimprovement}}
+
+    {{! Charts Section }}
+    {{#hascharts}}
+    <div class="charts-section mb-4">
+        <h3>{{#str}}visualizations, mod_aireading{{/str}}</h3>
+
+        {{! WPM Comparison Chart }}
+        {{#charts.wpm_comparison}}
+        <div class="chart-container card mb-3">
+            <div class="card-body">
+                {{{charts.wpm_comparison}}}
+            </div>
+        </div>
+        {{/charts.wpm_comparison}}
+
+        {{! Progress Chart }}
+        {{#charts.progress}}
+        <div class="chart-container card mb-3">
+            <div class="card-body">
+                {{{charts.progress}}}
+            </div>
+        </div>
+        {{/charts.progress}}
+
+        <div class="row">
+            {{! Error Distribution Chart }}
+            {{#charts.error_distribution}}
+            <div class="col-md-6">
+                <div class="chart-container card mb-3">
+                    <div class="card-body">
+                        {{{charts.error_distribution}}}
+                    </div>
+                </div>
+            </div>
+            {{/charts.error_distribution}}
+
+            {{! Pronunciation Progress Chart }}
+            {{#charts.pronunciation_progress}}
+            <div class="col-md-6">
+                <div class="chart-container card mb-3">
+                    <div class="card-body">
+                        {{{charts.pronunciation_progress}}}
+                    </div>
+                </div>
+            </div>
+            {{/charts.pronunciation_progress}}
+        </div>
+
+        {{! Improvement Chart }}
+        {{#charts.improvement}}
+        <div class="chart-container card mb-3">
+            <div class="card-body">
+                {{{charts.improvement}}}
+            </div>
+        </div>
+        {{/charts.improvement}}
+
+    </div>
+    {{/hascharts}}
+
+    {{! Insufficient attempts message }}
+    {{#insufficientattempts}}
+    <div class="alert alert-info">
+        <i class="fa fa-info-circle"></i>
+        {{#str}}need_more_attempts_for_trends, mod_aireading{{/str}}
+    </div>
+    {{/insufficientattempts}}
+
+    {{! Detailed Performance Metrics }}
+    <div class="detailed-metrics mb-4">
+        <h4>{{#str}}detailed_performance, mod_aireading{{/str}}</h4>
+        <div class="card">
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4">{{#str}}average_wpm, mod_aireading{{/str}}</dt>
+                    <dd class="col-sm-8">{{stats.avgwpm}}</dd>
+
+                    <dt class="col-sm-4">{{#str}}average_accuracy, mod_aireading{{/str}}</dt>
+                    <dd class="col-sm-8">{{stats.avgaccuracy}}%</dd>
+
+                    <dt class="col-sm-4">{{#str}}average_fluency, mod_aireading{{/str}}</dt>
+                    <dd class="col-sm-8">{{stats.avgfluency}}%</dd>
+
+                    {{#stats.haspronunciation}}
+                    <dt class="col-sm-4">{{#str}}average_pronunciation, mod_aireading{{/str}}</dt>
+                    <dd class="col-sm-8">{{stats.avgpronunciation}}%</dd>
+                    {{/stats.haspronunciation}}
+
+                    <dt class="col-sm-4">{{#str}}average_grade, mod_aireading{{/str}}</dt>
+                    <dd class="col-sm-8">{{stats.avggrade}}%</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+
+    {{/hasattempts}}
+
+</div>
+
+<style>
+.ai-reading-statistics-overview .stat-card {
+    border: 1px solid #dee2e6;
+    transition: transform 0.2s;
+}
+
+.ai-reading-statistics-overview .stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.ai-reading-statistics-overview .stat-icon {
+    font-size: 2em;
+    color: #0056b3;
+    margin-bottom: 10px;
+}
+
+.ai-reading-statistics-overview .stat-value {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #212529;
+}
+
+.ai-reading-statistics-overview .stat-label {
+    font-size: 0.9em;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.ai-reading-statistics-overview .improvement-metric {
+    text-align: center;
+    padding: 15px;
+}
+
+.ai-reading-statistics-overview .metric-label {
+    display: block;
+    font-size: 0.9em;
+    color: #6c757d;
+    margin-bottom: 5px;
+}
+
+.ai-reading-statistics-overview .metric-value {
+    display: block;
+    font-size: 1.8em;
+    font-weight: bold;
+}
+
+.ai-reading-statistics-overview .metric-value.positive {
+    color: #28a745;
+}
+
+.ai-reading-statistics-overview .metric-value:not(.positive) {
+    color: #dc3545;
+}
+
+.ai-reading-statistics-overview .chart-container {
+    border: 1px solid #dee2e6;
+}
+</style>

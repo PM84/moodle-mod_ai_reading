@@ -1,0 +1,756 @@
+/**
+ * AI Reading Trainer - Styles for feedback display and recorder
+ *
+ * @package    mod_aireading
+ * @copyright  2025 ISB Bayern
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+/* ======================================
+   Recorder Interface Styles
+   ====================================== */
+
+.aireading-recorder {
+    padding: 20px;
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.recorder-controls {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.recorder-controls button {
+    min-width: 150px;
+    font-size: 1.1em;
+    padding: 12px 24px;
+    transition: all 0.3s ease;
+}
+
+.recorder-controls button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.recorder-controls button:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.recorder-info {
+    text-align: center;
+}
+
+.timer-display {
+    font-size: 2em;
+    font-weight: bold;
+    color: #0056b3;
+    font-family: 'Courier New', monospace;
+}
+
+.status-display {
+    font-size: 1.1em;
+    color: #6c757d;
+    min-height: 30px;
+    padding: 8px;
+    background: #f8f9fa;
+    border-radius: 4px;
+}
+
+.waveform-container {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    background: #f0f0f0;
+    border-radius: 4px;
+}
+
+.waveform-container canvas {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #ccc;
+    background: #fff;
+}
+
+/* Reading text section */
+.reading-text-section {
+    margin-bottom: 30px;
+}
+
+.reading-text-content {
+    font-size: 1.2em;
+    line-height: 1.8;
+}
+
+/* Attempts list */
+.attempts-section {
+    margin-top: 40px;
+}
+
+.attempt-row {
+    transition: box-shadow 0.2s ease;
+}
+
+.attempt-row:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.attempt-scores {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.attempt-scores .badge {
+    font-size: 0.9em;
+    padding: 6px 12px;
+}
+
+/* Beginner Mode Styles */
+.aireading-beginner-mode .recorder-controls button {
+    font-size: 1.3em;
+    min-width: 180px;
+    padding: 16px 32px;
+}
+
+.aireading-beginner-mode .timer-display {
+    font-size: 2.5em;
+}
+
+.aireading-beginner-mode .status-display {
+    font-size: 1.3em;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .recorder-controls button {
+        min-width: 120px;
+        font-size: 1em;
+        padding: 10px 20px;
+    }
+    
+    .timer-display {
+        font-size: 1.5em;
+    }
+    
+    .attempt-row .col-md-2,
+    .attempt-row .col-md-4,
+    .attempt-row .col-md-6 {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    
+    .attempt-scores {
+        justify-content: center;
+    }
+}
+
+/* ======================================
+   Annotated Text Styles
+   ====================================== */
+
+.ai-reading-annotated-text {
+    font-size: 1.2em;
+    line-height: 2;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.ai-reading-annotated-text .word {
+    display: inline-block;
+    padding: 2px 4px;
+    margin: 2px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.ai-reading-annotated-text .word:focus {
+    outline: 2px solid #0056b3;
+    outline-offset: 2px;
+}
+
+/* Correct words */
+.ai-reading-annotated-text .word.correct {
+    color: #212529;
+}
+
+.ai-reading-annotated-text .word.correct:hover {
+    background-color: #e9ecef;
+}
+
+/* Accuracy Errors */
+.ai-reading-annotated-text .word.error-substitution {
+    background-color: #f8d7da;
+    color: #721c24;
+    border-bottom: 2px solid #dc3545;
+}
+
+.ai-reading-annotated-text .word.error-omission {
+    background-color: #f8d7da;
+    color: #721c24;
+    border-bottom: 2px dashed #dc3545;
+    text-decoration: line-through;
+}
+
+.ai-reading-annotated-text .word.error-insertion {
+    background-color: #fff3cd;
+    color: #856404;
+    border-bottom: 2px dotted #ffc107;
+}
+
+/* Fluency Errors */
+.ai-reading-annotated-text .word.error-pause {
+    background-color: #fff3cd;
+    color: #856404;
+    border-left: 3px solid #fd7e14;
+}
+
+.ai-reading-annotated-text .word.error-hesitation {
+    background-color: #fff3cd;
+    color: #856404;
+    border-bottom: 2px wavy #ffc107;
+}
+
+/* Pronunciation Errors */
+.ai-reading-annotated-text .word.error-pronunciation-bad {
+    background-color: #f5c6cb;
+    color: #8b0000;
+    border-bottom: 3px solid #8b0000;
+}
+
+.ai-reading-annotated-text .word.error-pronunciation-ok {
+    background-color: #ffe066;
+    color: #856404;
+    border-bottom: 2px solid #ffc107;
+}
+
+/* Playback highlighting */
+.ai-reading-annotated-text .word.playing {
+    background-color: #cfe2ff;
+    border: 2px solid #0d6efd;
+    transform: scale(1.05);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* ======================================
+   Error Legend
+   ====================================== */
+
+.ai-reading-legend {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+}
+
+.ai-reading-legend h4 {
+    font-size: 1.1em;
+    margin-bottom: 10px;
+    color: #495057;
+}
+
+.ai-reading-legend .legend-items {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+}
+
+.ai-reading-legend .legend-items li {
+    display: flex;
+    align-items: center;
+    font-size: 0.9em;
+}
+
+.ai-reading-legend .legend-marker {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+    border-radius: 3px;
+}
+
+.ai-reading-legend .legend-marker.error-substitution {
+    background-color: #f8d7da;
+    border-bottom: 2px solid #dc3545;
+}
+
+.ai-reading-legend .legend-marker.error-omission {
+    background-color: #f8d7da;
+    border-bottom: 2px dashed #dc3545;
+}
+
+.ai-reading-legend .legend-marker.error-pause {
+    background-color: #fff3cd;
+    border-left: 3px solid #fd7e14;
+}
+
+.ai-reading-legend .legend-marker.error-hesitation {
+    background-color: #fff3cd;
+    border-bottom: 2px wavy #ffc107;
+}
+
+.ai-reading-legend .legend-marker.error-pronunciation-bad {
+    background-color: #f5c6cb;
+    border-bottom: 3px solid #8b0000;
+}
+
+.ai-reading-legend .legend-marker.error-pronunciation-ok {
+    background-color: #ffe066;
+    border-bottom: 2px solid #ffc107;
+}
+
+/* ======================================
+   Tooltips
+   ====================================== */
+
+#ai-reading-tooltip {
+    position: absolute;
+    z-index: 10000;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 12px;
+    max-width: 300px;
+    font-size: 0.9em;
+    display: none;
+}
+
+#ai-reading-tooltip .tooltip-content {
+    margin-bottom: 8px;
+}
+
+#ai-reading-tooltip .tooltip-hint {
+    padding-top: 8px;
+    margin-top: 8px;
+    border-top: 1px solid #dee2e6;
+    font-size: 0.85em;
+    color: #6c757d;
+    font-style: italic;
+}
+
+#ai-reading-tooltip strong {
+    display: block;
+    margin-bottom: 4px;
+    color: #212529;
+}
+
+/* ======================================
+   Attempt Results Layout
+   ====================================== */
+
+.ai-reading-attempt-results {
+    margin: 20px 0;
+}
+
+.ai-reading-attempt-results .card {
+    border: 1px solid #dee2e6;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.ai-reading-attempt-results .card-title {
+    font-size: 1.3em;
+    font-weight: 600;
+    color: #212529;
+    margin-bottom: 15px;
+}
+
+/* ======================================
+   Score Cards
+   ====================================== */
+
+.attempt-scores .score-card {
+    text-align: center;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.attempt-scores .score-label {
+    font-size: 0.9em;
+    color: #6c757d;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.attempt-scores .score-value {
+    font-size: 2em;
+    font-weight: bold;
+}
+
+/* Score color coding */
+.score-value.score-90,
+.score-value.score-91,
+.score-value.score-92,
+.score-value.score-93,
+.score-value.score-94,
+.score-value.score-95,
+.score-value.score-96,
+.score-value.score-97,
+.score-value.score-98,
+.score-value.score-99,
+.score-value.score-100 {
+    color: #28a745;
+}
+
+.score-value.score-70,
+.score-value.score-71,
+.score-value.score-72,
+.score-value.score-73,
+.score-value.score-74,
+.score-value.score-75,
+.score-value.score-76,
+.score-value.score-77,
+.score-value.score-78,
+.score-value.score-79,
+.score-value.score-80,
+.score-value.score-81,
+.score-value.score-82,
+.score-value.score-83,
+.score-value.score-84,
+.score-value.score-85,
+.score-value.score-86,
+.score-value.score-87,
+.score-value.score-88,
+.score-value.score-89 {
+    color: #ffc107;
+}
+
+.score-value.score-0,
+.score-value.score-1,
+.score-value.score-2,
+.score-value.score-3,
+.score-value.score-4,
+.score-value.score-5,
+/* ... continuing pattern ... */
+.score-value.score-69 {
+    color: #dc3545;
+}
+
+.attempt-scores .final-grade {
+    text-align: center;
+    padding: 15px;
+    margin-top: 15px;
+    background-color: #e7f3ff;
+    border-radius: 8px;
+}
+
+.attempt-scores .grade-value {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #0056b3;
+    margin-left: 10px;
+}
+
+/* ======================================
+   Audio Player
+   ====================================== */
+
+.attempt-audio .ai-reading-audio-player {
+    width: 100%;
+    margin-top: 10px;
+}
+
+/* ======================================
+   Statistics
+   ====================================== */
+
+.ai-reading-statistics .stats-section {
+    padding: 15px 0;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.ai-reading-statistics .stats-section:last-child {
+    border-bottom: none;
+}
+
+.ai-reading-statistics h5 {
+    font-size: 1.1em;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #495057;
+}
+
+.ai-reading-statistics dl {
+    margin-bottom: 0;
+}
+
+.ai-reading-statistics dt {
+    font-weight: normal;
+    color: #6c757d;
+}
+
+.ai-reading-statistics dd {
+    font-weight: 600;
+    color: #212529;
+}
+
+.ai-reading-statistics .badge {
+    font-size: 0.9em;
+    padding: 4px 8px;
+}
+
+/* WPM Progress bar color coding */
+.ai-reading-statistics .progress-bar.bg-90,
+.ai-reading-statistics .progress-bar.bg-91,
+/* ... up to 100+ ... */
+.ai-reading-statistics .progress-bar.bg-100 {
+    background-color: #28a745 !important;
+}
+
+.ai-reading-statistics .progress-bar.bg-70,
+.ai-reading-statistics .progress-bar.bg-71,
+/* ... up to 89 ... */
+.ai-reading-statistics .progress-bar.bg-89 {
+    background-color: #ffc107 !important;
+}
+
+.ai-reading-statistics .progress-bar[class*="bg-"]:not(.bg-90):not(.bg-91):not(.bg-70) {
+    background-color: #dc3545 !important;
+}
+
+/* ======================================
+   Pronunciation Statistics Panel
+   ====================================== */
+
+.ai-reading-pronunciation-stats {
+    padding: 20px;
+}
+
+.ai-reading-pronunciation-stats h4 {
+    font-size: 1.3em;
+    margin-bottom: 15px;
+    color: #212529;
+}
+
+.ai-reading-pronunciation-stats .stat-box {
+    text-align: center;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+}
+
+.ai-reading-pronunciation-stats .stat-label {
+    font-size: 0.9em;
+    color: #6c757d;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.ai-reading-pronunciation-stats .stat-value {
+    font-size: 2em;
+    font-weight: bold;
+    color: #0056b3;
+}
+
+.ai-reading-pronunciation-stats .confidence-score {
+    color: #28a745;
+}
+
+.ai-reading-pronunciation-stats .confidence-threshold {
+    color: #6c757d;
+}
+
+/* Word Lists */
+.ai-reading-pronunciation-stats .word-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.ai-reading-pronunciation-stats .word-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    margin-bottom: 5px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+}
+
+.ai-reading-pronunciation-stats .word-text {
+    font-weight: 500;
+    font-size: 1.1em;
+}
+
+.ai-reading-pronunciation-stats .word-text.pronunciation-bad {
+    color: #8b0000;
+}
+
+.ai-reading-pronunciation-stats .word-text.pronunciation-ok {
+    color: #856404;
+}
+
+.ai-reading-pronunciation-stats .word-confidence {
+    font-size: 0.9em;
+}
+
+/* Focus Words */
+.ai-reading-pronunciation-stats .focus-words-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.ai-reading-pronunciation-stats .focus-words-list .badge {
+    font-size: 1em;
+    padding: 6px 12px;
+}
+
+/* Pronunciation Legend */
+.ai-reading-pronunciation-stats .pronunciation-legend {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+}
+
+.ai-reading-pronunciation-stats .pronunciation-legend h5 {
+    font-size: 1em;
+    margin-bottom: 10px;
+}
+
+.ai-reading-pronunciation-stats .pronunciation-legend .legend-items {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.ai-reading-pronunciation-stats .pronunciation-legend .legend-items li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.ai-reading-pronunciation-stats .pronunciation-legend .legend-marker {
+    width: 24px;
+    height: 16px;
+    margin-right: 10px;
+    border-radius: 3px;
+}
+
+.ai-reading-pronunciation-stats .pronunciation-note {
+    padding: 10px;
+    background-color: #fff3cd;
+    border-left: 3px solid #ffc107;
+    border-radius: 4px;
+}
+
+/* ======================================
+   Teacher Feedback
+   ====================================== */
+
+.teacher-feedback .feedback-content {
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-left: 4px solid #0056b3;
+    border-radius: 4px;
+}
+
+/* ======================================
+   Beginner Mode Styles
+   ====================================== */
+
+.ai-reading-attempt-results.beginner-mode .ai-reading-annotated-text {
+    font-size: 1.4em;
+    line-height: 2.5;
+}
+
+.ai-reading-attempt-results.beginner-mode .score-card {
+    padding: 25px;
+}
+
+.ai-reading-attempt-results.beginner-mode .score-value {
+    font-size: 2.5em;
+}
+
+/* Hide complex details in beginner mode */
+.ai-reading-attempt-results.beginner-mode .ai-reading-legend {
+    display: none;
+}
+
+.ai-reading-attempt-results.beginner-mode .stats-section.error-breakdown {
+    display: none;
+}
+
+/* ======================================
+   Accessibility
+   ====================================== */
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .ai-reading-annotated-text .word {
+        border: 2px solid;
+    }
+
+    .ai-reading-annotated-text .word.error-substitution,
+    .ai-reading-annotated-text .word.error-omission {
+        border-color: #000;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .ai-reading-annotated-text .word {
+        transition: none;
+    }
+
+    .ai-reading-annotated-text .word.playing {
+        transform: none;
+    }
+}
+
+/* ======================================
+   Responsive Design
+   ====================================== */
+
+@media (max-width: 768px) {
+    .ai-reading-annotated-text {
+        font-size: 1em;
+        padding: 15px;
+    }
+
+    .attempt-scores .row {
+        flex-direction: column;
+    }
+
+    .attempt-scores .col-md-3 {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .ai-reading-pronunciation-stats .word-breakdown .row {
+        flex-direction: column;
+    }
+
+    .ai-reading-pronunciation-stats .col-md-6 {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+}

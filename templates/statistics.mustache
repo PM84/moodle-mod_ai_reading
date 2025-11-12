@@ -1,0 +1,110 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template mod_aireading/statistics
+
+    Displays statistics for a reading attempt
+
+    Context variables:
+    * wordcount_original - Number of words in original text
+    * wordcount_transcribed - Number of words transcribed
+    * wpm - Words per minute
+    * targetwpm - Target WPM
+    * wpm_percentage - Percentage of target achieved
+    * wer - Word Error Rate (percentage)
+    * showdetails - Whether to show detailed error breakdown
+    * accuracy_errors - Number of accuracy errors
+    * fluency_errors - Number of fluency errors
+    * pronunciation_errors - Number of pronunciation errors (optional)
+}}
+
+<div class="ai-reading-statistics">
+
+    {{! Basic metrics }}
+    <div class="stats-section mb-3">
+        <h5>{{#str}}basic_metrics, mod_aireading{{/str}}</h5>
+        <dl class="row mb-0">
+            <dt class="col-sm-6">{{#str}}words_in_text, mod_aireading{{/str}}</dt>
+            <dd class="col-sm-6">{{wordcount_original}}</dd>
+
+            <dt class="col-sm-6">{{#str}}words_transcribed, mod_aireading{{/str}}</dt>
+            <dd class="col-sm-6">{{wordcount_transcribed}}</dd>
+
+            <dt class="col-sm-6">{{#str}}reading_speed, mod_aireading{{/str}}</dt>
+            <dd class="col-sm-6">
+                {{wpm}} {{#str}}wpm, mod_aireading{{/str}}
+                <span class="text-muted">({{#str}}target, mod_aireading{{/str}}: {{targetwpm}})</span>
+            </dd>
+
+            {{#wer}}
+            <dt class="col-sm-6">{{#str}}word_error_rate, mod_aireading{{/str}}</dt>
+            <dd class="col-sm-6">{{wer}}%</dd>
+            {{/wer}}
+        </dl>
+    </div>
+
+    {{! Detailed error breakdown (not in beginner mode) }}
+    {{#showdetails}}
+    <div class="stats-section mb-3">
+        <h5>{{#str}}error_breakdown, mod_aireading{{/str}}</h5>
+        <dl class="row mb-0">
+            <dt class="col-sm-6">{{#str}}accuracy_errors_count, mod_aireading{{/str}}</dt>
+            <dd class="col-sm-6">
+                <span class="badge badge-{{#accuracy_errors}}danger{{/accuracy_errors}}{{^accuracy_errors}}success{{/accuracy_errors}}">
+                    {{accuracy_errors}}
+                </span>
+            </dd>
+
+            <dt class="col-sm-6">{{#str}}fluency_errors_count, mod_aireading{{/str}}</dt>
+            <dd class="col-sm-6">
+                <span class="badge badge-{{#fluency_errors}}warning{{/fluency_errors}}{{^fluency_errors}}success{{/fluency_errors}}">
+                    {{fluency_errors}}
+                </span>
+            </dd>
+
+            {{#pronunciation_errors}}
+            <dt class="col-sm-6">{{#str}}pronunciation_errors_count, mod_aireading{{/str}}</dt>
+            <dd class="col-sm-6">
+                <span class="badge badge-{{#pronunciation_errors}}info{{/pronunciation_errors}}{{^pronunciation_errors}}success{{/pronunciation_errors}}">
+                    {{pronunciation_errors}}
+                </span>
+            </dd>
+            {{/pronunciation_errors}}
+        </dl>
+    </div>
+    {{/showdetails}}
+
+    {{! WPM comparison bar }}
+    <div class="stats-section">
+        <h5>{{#str}}wpm_comparison, mod_aireading{{/str}}</h5>
+        <div class="progress" style="height: 30px;">
+            <div class="progress-bar {{#wpm_percentage}}bg-{{wpm_percentage}}{{/wpm_percentage}}"
+                 role="progressbar"
+                 style="width: {{wpm_percentage}}%"
+                 aria-valuenow="{{wpm}}"
+                 aria-valuemin="0"
+                 aria-valuemax="{{targetwpm}}">
+                {{wpm_percentage}}%
+            </div>
+        </div>
+        <div class="progress-labels mt-1 d-flex justify-content-between">
+            <small class="text-muted">0</small>
+            <small class="text-muted">{{#str}}target, mod_aireading{{/str}}: {{targetwpm}}</small>
+        </div>
+    </div>
+
+</div>
